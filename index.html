@@ -2,35 +2,172 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Shivam P travel record app for route history and trip expenses.">
     <link rel="stylesheet" href="style.css">
-    <title>my profile</title>
+    <title>Shivam P | Travel Record</title>
 </head>
-<body onload="loader()">
-    <div id="Loading"></div>
-     <!-----start Hearder section----->
-     <div id="hearder"  data-aos="fade-up"
-     data-aos-anchor-placement="top-bottom">
-        <div class="contenier">
-            <nav >
-                <img src="img/ss logo.png" alt="logo" class="logo" data-aos="zoom-in">
-                <ul id="sidmenu" data-aos="zoom-in">
-                    <li><a href="#hearder" >Home</a></li>
-                    <li><a href="#about" >About</a></li>
-                    <li><a href="#services">Services</a></li>
-                    <li><a href="#portfolio" >Projects</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                    <i class="fa-solid fa-xmark" onclick="closemenu()"></i>
-                 </ul>
-                 <i class="fa-solid fa-bars" onclick="openmenu()"></i>
-              </nav> 
-              <div class="hearder-text"  data-aos="fade-right">
-                <p> </p>
-                <h1><span>Traveling Website </span> <br></h1>
-              </div>       
-               
+<body>
+    <header class="site-header">
+        <a class="brand" href="#app">
+            <span class="brand-mark">SP</span>
+            <span>Shivam P</span>
+        </a>
+
+        <nav class="nav-links" aria-label="Main navigation">
+            <a href="#trips">Trips</a>
+            <a href="#expenses">Expenses</a>
+            <a href="#memory">Memories</a>
+            <a class="nav-action" href="#start">Start trip</a>
+        </nav>
+    </header>
+
+    <main id="app">
+        <section class="workspace" id="start">
+            <div class="trip-panel">
+                <p class="eyebrow">Active trip</p>
+                <h1>Saharanpur to Dehradun</h1>
+                <p class="lead">
+                    Keep the route, budget, and expense record together until the trip is complete.
+                </p>
+
+                <form class="trip-form">
+                    <label>
+                        Trip name
+                        <input type="text" value="Weekend mountain ride" aria-label="Trip name">
+                    </label>
+                    <label>
+                        From
+                        <input type="text" value="Saharanpur" aria-label="Trip source">
+                    </label>
+                    <label>
+                        To
+                        <input type="text" value="Dehradun" aria-label="Trip destination">
+                    </label>
+                    <label>
+                        Budget
+                        <input type="text" value="Rs. 8,000" aria-label="Trip budget">
+                    </label>
+
+                    <div class="form-actions">
+                        <button type="button">Create trip</button>
+                        <button class="secondary-button" type="button">Mark as done</button>
+                    </div>
+                </form>
             </div>
-        </div>
-     </div>
-      <!-----End Hearder section----->
+
+            <div class="route-panel" aria-label="Trip route preview">
+                <img
+                    src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&amp;fit=crop&amp;w=1200&amp;q=80"
+                    alt="Mountain road route"
+                >
+                <div class="route-overlay">
+                    <div class="route-card active-route">
+                        <span>Red route</span>
+                        <strong>Active</strong>
+                    </div>
+                    <div class="route-card done-route">
+                        <span>Green route</span>
+                        <strong>Completed</strong>
+                    </div>
+                    <div class="route-line">
+                        <span class="route-point start-point"></span>
+                        <span class="route-point end-point"></span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="status-grid" aria-label="Trip summary">
+            <article>
+                <span class="metric">1</span>
+                <p>Active trip</p>
+            </article>
+            <article>
+                <span class="metric">3</span>
+                <p>Completed routes</p>
+            </article>
+            <article>
+                <span class="metric">Rs. 4,850</span>
+                <p>Current spend</p>
+            </article>
+        </section>
+
+        <section class="content-grid" id="trips">
+            <div class="section-copy">
+                <p class="eyebrow">Trip lifecycle</p>
+                <h2>Trips stay clean from start to finish.</h2>
+                <p>
+                    Active trips stay open for expenses. Completed trips become permanent green records in history.
+                </p>
+            </div>
+
+            <div class="trip-list">
+                <article class="trip-item">
+                    <span class="status-pill active">Active</span>
+                    <h3>Saharanpur to Dehradun</h3>
+                    <p>Food, fuel, and stay expenses are open.</p>
+                </article>
+                <article class="trip-item">
+                    <span class="status-pill done">Done</span>
+                    <h3>Saharanpur to Haridwar</h3>
+                    <p>Expense sheet locked in trip history.</p>
+                </article>
+                <article class="trip-item">
+                    <span class="status-pill done">Done</span>
+                    <h3>Delhi to Jaipur</h3>
+                    <p>Route saved as a completed travel record.</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="ledger-section" id="expenses">
+            <div class="section-heading">
+                <p class="eyebrow">Expense ledger</p>
+                <h2>Every rupee belongs to one trip.</h2>
+            </div>
+
+            <div class="ledger-table" role="table" aria-label="Trip expenses">
+                <div class="ledger-row ledger-head" role="row">
+                    <span role="columnheader">Category</span>
+                    <span role="columnheader">Paid by</span>
+                    <span role="columnheader">Amount</span>
+                    <span role="columnheader">Split</span>
+                </div>
+                <div class="ledger-row" role="row">
+                    <span role="cell">Fuel</span>
+                    <span role="cell">Shivam</span>
+                    <span role="cell">Rs. 500</span>
+                    <span role="cell">Solo</span>
+                </div>
+                <div class="ledger-row" role="row">
+                    <span role="cell">Food</span>
+                    <span role="cell">Aman</span>
+                    <span role="cell">Rs. 1,250</span>
+                    <span role="cell">3 people</span>
+                </div>
+                <div class="ledger-row" role="row">
+                    <span role="cell">Stay</span>
+                    <span role="cell">Riya</span>
+                    <span role="cell">Rs. 3,100</span>
+                    <span role="cell">3 people</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="memory-section" id="memory">
+            <div>
+                <p class="eyebrow">Premium memories</p>
+                <h2>Save photos where the journey happened.</h2>
+                <p>
+                    Attach travel photos to locations and keep them beside the completed route.
+                </p>
+            </div>
+            <img
+                src="https://images.unsplash.com/photo-1527631746610-bca00a040d60?auto=format&amp;fit=crop&amp;w=900&amp;q=80"
+                alt="Travel friends recording a journey"
+            >
+        </section>
+    </main>
+</body>
+</html>
