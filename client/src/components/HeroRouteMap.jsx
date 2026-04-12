@@ -4,7 +4,7 @@ import L from "leaflet";
 import { useMotionValueEvent } from "framer-motion";
 
 const SAHARANPUR = [29.9640, 77.5460];
-const PURI = [19.8049, 85.8179];
+const CHENNAI = [13.0827, 80.2707];
 
 // Calculate straight geographical interpolation between two coordinate arrays
 function calculateProgressPosition(start, end, progress) {
@@ -19,13 +19,13 @@ export default function HeroRouteMap({ scrollProgress }) {
 
   // Synchronously bind the Framer Motion wheel event to the Leaflet coordinate state
   useMotionValueEvent(scrollProgress, "change", (latest) => {
-    // Accelerate the progress by 1.6x so the journey completes 
-    // BEFORE the map scrolls off the top of the screen!
-    const acceleratedProgress = latest * 1.6;
+    // Accelerate the progress massively so the journey completes 
+    // visibly BEFORE the destination scrolls off the screen!
+    const acceleratedProgress = latest * 3.5;
     const p = Math.min(Math.max(acceleratedProgress, 0), 1);
     
     // Update Map coordinate physically via lerping
-    setVehiclePos(calculateProgressPosition(SAHARANPUR, PURI, p));
+    setVehiclePos(calculateProgressPosition(SAHARANPUR, CHENNAI, p));
     
     // Transition color to green at exactly 85% trip completion
     if (p > 0.85) {
@@ -36,8 +36,8 @@ export default function HeroRouteMap({ scrollProgress }) {
   });
 
   const center = [
-     (SAHARANPUR[0] + PURI[0]) / 2,
-     (SAHARANPUR[1] + PURI[1]) / 2,
+     (SAHARANPUR[0] + CHENNAI[0]) / 2,
+     (SAHARANPUR[1] + CHENNAI[1]) / 2,
   ];
 
   // Creates the highly stylized glowing Bus icon
@@ -53,12 +53,10 @@ export default function HeroRouteMap({ scrollProgress }) {
     iconAnchor: [0, 0]
   });
 
-  // Generates clean standard map pins for Start/End
-  const cityPin = (name, color) => L.divIcon({
+  const cityPin = (name) => L.divIcon({
     className: "custom-city-pin",
     html: `
-      <div style="background: white; border-radius: 99px; box-shadow: 0 4px 12px rgba(0,0,0,0.2); display: flex; align-items: center; gap: 8px; padding: 6px 16px; font-weight: 800; font-family: Inter, sans-serif; font-size: 13px; color: #111827; transform: translate(-50%, -50%);">
-        <div style="width: 8px; height: 8px; border-radius: 99px; background: ${color}"></div>
+      <div style="display: flex; align-items: center; gap: 6px; font-weight: 800; font-family: Inter, sans-serif; font-size: 18px; color: #111827; text-shadow: 0 2px 4px rgba(255,255,255,0.8); transform: translate(-50%, -50%); white-space: nowrap;">
         ${name}
       </div>
     `,
@@ -83,11 +81,11 @@ export default function HeroRouteMap({ scrollProgress }) {
         <Polyline
           key={routeColor}
           pathOptions={{ color: routeColor, weight: 6, dashArray: "12, 12", lineJoin: "round", lineCap: "round" }}
-          positions={[SAHARANPUR, PURI]}
+          positions={[SAHARANPUR, CHENNAI]}
         />
         
-        <Marker position={SAHARANPUR} icon={cityPin("Saharanpur", "#e11d48")} />
-        <Marker position={PURI} icon={cityPin("Puri Temple", "#10B981")} />
+        <Marker position={SAHARANPUR} icon={cityPin("📍 Saharanpur")} />
+        <Marker position={CHENNAI} icon={cityPin("🏁 Chennai")} />
         
         <Marker position={vehiclePos} icon={animatedVehicleIcon} zIndexOffset={1000} />
       </MapContainer>

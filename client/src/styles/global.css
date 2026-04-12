@@ -587,7 +587,7 @@ select {
 }
 
 .route-timeline::before {
-  background: linear-gradient(180deg, #4F46E5, #4F46E5 50%, #10B981 50%, #10B981);
+  background: linear-gradient(180deg, #e11d48, #e11d48 50%, #10B981 50%, #10B981);
   border-radius: 999px;
   content: "";
   height: calc(100% - 28px);
@@ -612,7 +612,7 @@ select {
 
 .timeline-stop::before {
   background: #ffffff;
-  border: 5px solid #4F46E5;
+  border: 5px solid #e11d48;
   border-radius: 999px;
   content: "";
   height: 20px;

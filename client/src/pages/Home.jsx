@@ -143,7 +143,7 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Right Side: Animated Leaflet Map tracking Saharanpur to Puri Temple */}
+        {/* Right Side: Animated Leaflet Map tracking Saharanpur to Chennai */}
         <div className="hero-split-map leaflet-hero-container">
           <HeroRouteMap scrollProgress={heroProgress} />
         </div>
