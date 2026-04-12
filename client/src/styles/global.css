@@ -1,15 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
 :root {
-  color: #171717;
-  background: #f7f9fb;
+  color: #111827;
+  background: #FAFAFA;
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   font-synthesis: none;
   letter-spacing: 0;
   text-rendering: optimizeLegibility;
   --scroll-progress: 0;
-  --mouse-x: 50vw;
-  --mouse-y: 50vh;
-  --tilt-x: 0;
-  --tilt-y: 0;
 }
 
 * {
@@ -38,8 +36,8 @@ select {
 
 .topbar {
   align-items: center;
-  background: #ffffff;
-  border-bottom: 1px solid #e4e7ec;
+  background: rgba(253, 251, 247, 0.95);
+  border-bottom: 1px solid rgba(26, 28, 29, 0.08);
   display: flex;
   gap: 24px;
   justify-content: space-between;
@@ -50,9 +48,11 @@ select {
 }
 
 .brand {
-  color: #0f766e;
-  font-size: 1.2rem;
-  font-weight: 800;
+  color: #111827;
+  font-family: inherit;
+  font-size: 1.25rem;
+  font-weight: 900;
+  letter-spacing: -0.02em;
 }
 
 .nav-links {
@@ -64,12 +64,13 @@ select {
 
 .nav-links a,
 .link-button {
-  color: #3f3f46;
-  font-weight: 700;
+  color: #4B5563;
+  font-weight: 600;
+  font-size: 0.95rem;
 }
 
 .nav-links a.active {
-  color: #0f766e;
+  color: #111827;
 }
 
 .link-button {
@@ -98,67 +99,60 @@ select {
 }
 
 .cursor-light {
-  background: radial-gradient(circle, rgba(15, 118, 110, 0.18), transparent 58%);
-  border-radius: 999px;
-  height: 320px;
-  left: var(--mouse-x);
-  pointer-events: none;
-  position: fixed;
-  top: var(--mouse-y);
-  transform: translate(-50%, -50%);
-  width: 320px;
-  z-index: 0;
+  display: none; /* Removing expensive CPU-bound cursor */
 }
 
-.motion-item {
-  filter: blur(8px);
-  opacity: 0;
-  transform: translateY(54px) scale(0.97);
-  transition:
-    filter 900ms ease,
-    opacity 720ms ease,
-    transform 900ms cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.motion-item.motion-in {
-  filter: blur(0);
-  opacity: 1;
-  transform: translateY(0) scale(1);
-}
+/* Framer Motion now handles scroll reveals */
 
 .home-experience {
   display: grid;
   gap: 32px;
 }
 
-.cinema-hero {
-  border-radius: 8px;
-  min-height: 620px;
+.cinema-hero.split-layout {
+  display: grid;
+  grid-template-columns: minmax(320px, 0.9fr) minmax(0, 1.1fr);
+  min-height: 720px;
+  background: #111827;
+  border-radius: 24px;
   overflow: hidden;
+  position: relative;
+  box-shadow: 0 32px 80px rgba(0,0,0,0.1);
+  padding: 0;
+}
+
+.hero-split-text {
+  padding: 80px 64px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  z-index: 2;
   position: relative;
 }
 
-.cinema-hero img {
-  height: 100%;
-  inset: 0;
-  object-fit: cover;
-  position: absolute;
-  transform:
-    translate(
-      calc(var(--tilt-x) * -20px),
-      calc(var(--tilt-y) * -20px)
-    )
-    scale(1.08);
-  transition: transform 180ms ease-out;
-  width: 100%;
+.hero-split-text p.eyebrow {
+  color: #9CA3AF;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
 }
 
-.cinema-tint {
-  background:
-    linear-gradient(90deg, rgba(8, 14, 13, 0.9), rgba(8, 14, 13, 0.58), rgba(8, 14, 13, 0.18)),
-    linear-gradient(0deg, rgba(8, 14, 13, 0.72), rgba(8, 14, 13, 0.05) 44%);
-  inset: 0;
-  position: absolute;
+.hero-split-text h1 {
+  color: #F9FAFB;
+  font-size: clamp(3rem, 4vw, 4.2rem);
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  line-height: 0.95;
+  margin: 0 0 24px 0;
+}
+
+.hero-split-text > p {
+  color: #D1D5DB;
+  font-size: 1.15rem;
+  line-height: 1.7;
+  margin: 0 0 42px 0;
+  max-width: 480px;
 }
 
 .hero-copy {
@@ -171,10 +165,11 @@ select {
 }
 
 .hero-copy h1 {
-  font-size: 4.6rem;
-  letter-spacing: 0;
-  line-height: 0.94;
-  margin: 10px 0 22px;
+  font-size: 4.8rem;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 0.95;
+  margin: 10px 0 24px;
 }
 
 .hero-copy p {
@@ -194,89 +189,50 @@ select {
   color: #0f766e;
 }
 
-.journey-map {
-  animation: floatPanel 5200ms ease-in-out infinite;
-  bottom: 38px;
-  height: 250px;
-  position: absolute;
-  right: 52px;
-  transform:
-    rotateX(calc(var(--tilt-y) * -5deg))
-    rotateY(calc(var(--tilt-x) * 5deg));
-  transform-style: preserve-3d;
-  width: 450px;
-  z-index: 3;
+.hero-split-map {
+  position: relative;
+  overflow: hidden;
+  background: #E5E7EB;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.moving-route {
-  animation: routePulse 2400ms ease-in-out infinite, routeFlow 1100ms linear infinite;
-  background: repeating-linear-gradient(
-    90deg,
-    #e11d48 0,
-    #e11d48 24px,
-    #ffffff 24px,
-    #ffffff 34px
-  );
-  border: 0;
-  border-radius: 999px;
-  box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.2);
-  height: 9px;
-  left: 26px;
-  position: absolute;
-  top: 136px;
-  transform: rotate(-17deg);
-  transform-origin: left center;
-  width: 390px;
+.leaflet-hero-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  z-index: 1;
 }
 
-.route-node {
-  animation: nodePulse 1800ms ease-in-out infinite;
-  background: #ffffff;
-  border: 8px solid #e11d48;
-  border-radius: 999px;
-  height: 30px;
-  position: absolute;
-  width: 30px;
+/* Ensure React Leaflet bounds are strict */
+.leaflet-hero-container .leaflet-container {
+  width: 100%;
+  height: 100%;
+  border-radius: 0; 
 }
 
-.origin-node {
-  left: 14px;
-  top: 120px;
+/* Fix z-indexing for the custom glowing vehicle */
+.custom-leaflet-vehicle {
+  background: transparent !important;
+  border: none !important;
 }
 
-.destination-node {
-  animation-delay: 650ms;
-  right: 20px;
-  top: 6px;
-}
-
-.route-particle {
-  animation: routeParticle 2600ms linear infinite;
-  background: #ffffff;
-  border-radius: 999px;
-  box-shadow: 0 0 18px rgba(255, 255, 255, 0.9);
-  height: 10px;
-  left: 30px;
-  position: absolute;
-  top: 130px;
-  width: 10px;
-}
-
-.particle-two {
-  animation-delay: 800ms;
-}
-
-.particle-three {
-  animation-delay: 1500ms;
+.custom-city-pin {
+  background: transparent !important;
+  border: none !important;
 }
 
 .map-label,
 .live-chip {
-  background: rgba(255, 255, 255, 0.95);
-  border: 1px solid rgba(255, 255, 255, 0.6);
-  border-radius: 8px;
-  color: #171717;
-  font-weight: 900;
+  background: rgba(255, 255, 255, 0.98);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+  color: #111827;
+  font-weight: 800;
+  font-size: 0.9rem;
+  letter-spacing: -0.01em;
   position: absolute;
 }
 
@@ -314,7 +270,7 @@ select {
 }
 
 .active-chip strong {
-  color: #be123c;
+  color: #4F46E5;
 }
 
 .history-chip {
@@ -324,7 +280,7 @@ select {
 }
 
 .history-chip strong {
-  color: #15803d;
+  color: #10B981;
 }
 
 .ticker-strip {
@@ -381,8 +337,10 @@ select {
 .section-title h2,
 .timeline-copy h2,
 .launch-section h2 {
-  font-size: 3.1rem;
-  line-height: 1;
+  font-size: 3.2rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
   margin: 8px 0 0;
 }
 
@@ -409,11 +367,10 @@ select {
 }
 
 .product-stage {
-  animation: productDrift 7200ms ease-in-out infinite;
-  background: #ffffff;
-  border: 1px solid #e4e7ec;
-  border-radius: 8px;
-  box-shadow: 0 16px 36px rgba(23, 23, 23, 0.08);
+  background: #FFFFFF;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: 16px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.04);
   display: grid;
   gap: 18px;
   padding: 20px;
@@ -432,8 +389,10 @@ select {
 }
 
 .trip-status-bar > strong {
-  color: #0f766e;
+  color: #111827;
   font-size: 1.75rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
 }
 
 .stage-map {
@@ -463,36 +422,25 @@ select {
 }
 
 .stage-route {
-  animation: stageRouteFlow 1300ms linear infinite;
-  background: repeating-linear-gradient(
-    90deg,
-    #e11d48 0,
-    #e11d48 22px,
-    #ffffff 22px,
-    #ffffff 32px
-  );
   border: 0;
   border-radius: 999px;
-  height: 8px;
+  height: 6px;
   left: 72px;
   position: absolute;
   top: 182px;
   transform: rotate(-19deg);
   width: 70%;
   z-index: 2;
+  /* background dynamically set by Framer Motion */
 }
 
 .stage-route-runner {
-  animation: stageRunner 2400ms linear infinite;
-  background: #ffffff;
-  border: 5px solid #e11d48;
-  border-radius: 999px;
-  box-shadow: 0 0 22px rgba(225, 29, 72, 0.55);
-  height: 22px;
-  left: 76px;
   position: absolute;
-  top: 171px;
-  width: 22px;
+  top: 0;
+  background: none;
+  border: none;
+  box-shadow: none;
+  animation: none;
   z-index: 4;
 }
 
@@ -532,10 +480,9 @@ select {
 }
 
 .expense-stack div {
-  animation: cardLift 5200ms ease-in-out infinite;
-  background: #f7f9fb;
-  border: 1px solid #e4e7ec;
-  border-radius: 8px;
+  background: #F9FAFB;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  border-radius: 12px;
   display: grid;
   gap: 6px;
   min-height: 118px;
@@ -552,9 +499,9 @@ select {
 
 .expense-stack span,
 .module-tile span {
-  color: #0f766e;
+  color: #4F46E5;
   font-size: 0.78rem;
-  font-weight: 900;
+  font-weight: 800;
   text-transform: uppercase;
 }
 
@@ -588,17 +535,15 @@ select {
 
 .module-tile {
   animation: softRise 6200ms ease-in-out infinite;
-  background: #ffffff;
-  border: 1px solid #e4e7ec;
+  background: #FFFFFF;
+  border: 1px solid #EAE6DF;
   border-radius: 8px;
-  box-shadow: 0 12px 28px rgba(23, 23, 23, 0.06);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.03);
   display: grid;
   gap: 10px;
   min-height: 250px;
   padding: 22px;
-  transition:
-    border-color 220ms ease,
-    transform 220ms ease;
+  transition: border-color 220ms ease;
 }
 
 .module-tile:nth-child(2) {
@@ -614,7 +559,7 @@ select {
 }
 
 .module-tile:hover {
-  border-color: #0f766e;
+  border-color: #0F4C5C;
   transform: translateY(-4px);
 }
 
@@ -642,8 +587,7 @@ select {
 }
 
 .route-timeline::before {
-  animation: timelineGlow 2600ms ease-in-out infinite;
-  background: linear-gradient(180deg, #e11d48, #e11d48 50%, #16a34a 50%, #16a34a);
+  background: linear-gradient(180deg, #4F46E5, #4F46E5 50%, #10B981 50%, #10B981);
   border-radius: 999px;
   content: "";
   height: calc(100% - 28px);
@@ -667,21 +611,19 @@ select {
 }
 
 .timeline-stop::before {
-  animation: nodePulse 1900ms ease-in-out infinite;
   background: #ffffff;
-  border: 7px solid #e11d48;
+  border: 5px solid #4F46E5;
   border-radius: 999px;
   content: "";
-  height: 22px;
-  left: -44px;
+  height: 20px;
+  left: -43px;
   position: absolute;
-  top: 22px;
-  width: 22px;
+  top: 23px;
+  width: 20px;
 }
 
 .timeline-stop:nth-child(n + 3)::before {
-  animation-delay: 700ms;
-  border-color: #16a34a;
+  border-color: #10B981;
 }
 
 .timeline-stop span {

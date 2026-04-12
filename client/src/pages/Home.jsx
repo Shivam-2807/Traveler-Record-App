@@ -1,5 +1,7 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
+import { motion, useScroll, useTransform } from "framer-motion";
+import HeroRouteMap from "../components/HeroRouteMap.jsx";
 
 const modules = [
   {
@@ -53,25 +55,45 @@ const expenses = [
   ["Stay", "Dehradun hostel", "Rs. 3,100"]
 ];
 
+const fadeUp = {
+  hidden: { opacity: 0, y: 40 },
+  visible: { 
+    opacity: 1, 
+    y: 0, 
+    transition: { duration: 0.6, ease: "easeOut" }
+  }
+};
+
+const staggerContainer = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.15 }
+  }
+};
+
 export default function Home() {
+  const stageRef = useRef(null);
+  const heroRef = useRef(null);
+
+  // Hero Scroll Map
+  const { scrollYProgress: heroProgress } = useScroll({
+    target: heroRef,
+    offset: ["start start", "end start"]
+  });
+
+  // Live Workflow Scroll Map
+  const { scrollYProgress } = useScroll({
+    target: stageRef,
+    offset: ["start center", "center center"]
+  });
+
+  const vehicleLeft = useTransform(scrollYProgress, [0.1, 0.9], ["0%", "94%"]);
+  // At 85% trip completion, smoothly switch the road to green
+  const routeColor = useTransform(scrollYProgress, [0.85, 0.95], ["#e11d48", "#10B981"]);
+
   useEffect(() => {
     const root = document.documentElement;
-    const motionItems = document.querySelectorAll(".motion-item");
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("motion-in");
-          }
-        });
-      },
-      {
-        rootMargin: "0px 0px -12% 0px",
-        threshold: 0.18
-      }
-    );
-
-    motionItems.forEach((item) => observer.observe(item));
 
     function updateScrollProgress() {
       const scrollableHeight = document.body.scrollHeight - window.innerHeight;
@@ -79,26 +101,11 @@ export default function Home() {
       root.style.setProperty("--scroll-progress", progress.toString());
     }
 
-    function updatePointer(event) {
-      const x = event.clientX;
-      const y = event.clientY;
-      const tiltX = (x / window.innerWidth - 0.5).toFixed(3);
-      const tiltY = (y / window.innerHeight - 0.5).toFixed(3);
-
-      root.style.setProperty("--mouse-x", `${x}px`);
-      root.style.setProperty("--mouse-y", `${y}px`);
-      root.style.setProperty("--tilt-x", tiltX);
-      root.style.setProperty("--tilt-y", tiltY);
-    }
-
     updateScrollProgress();
     window.addEventListener("scroll", updateScrollProgress, { passive: true });
-    window.addEventListener("pointermove", updatePointer, { passive: true });
 
     return () => {
-      observer.disconnect();
       window.removeEventListener("scroll", updateScrollProgress);
-      window.removeEventListener("pointermove", updatePointer);
     };
   }, []);
 
@@ -106,50 +113,50 @@ export default function Home() {
     <div className="home-experience">
       <div className="scroll-progress" aria-hidden="true" />
       <div className="cursor-light" aria-hidden="true" />
-      <section className="cinema-hero motion-item">
-        <img
-          src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1800&q=85"
-          alt="Mountain road for a travel route"
-        />
-        <div className="cinema-tint" />
-        <div className="hero-copy">
-          <p className="eyebrow light">Shivam P travel system</p>
+      <motion.section 
+        className="cinema-hero split-layout"
+        ref={heroRef}
+        variants={fadeUp}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "0px 0px -10% 0px" }}
+      >
+        {/* Left Side: Dark Hero Copy */}
+        <div className="hero-split-text">
+          <p className="eyebrow light">SHIVAM P TRAVEL SYSTEM</p>
           <h1>Every trip becomes a living route, ledger, and memory.</h1>
           <p>
             Active journeys glow red. Completed routes settle into green history.
             Expenses stay inside the trip where they belong.
           </p>
           <div className="actions">
-            <Link className="button" to="/register">
-              Start your first trip
-            </Link>
-            <Link className="button hero-secondary" to="/login">
-              Open dashboard
-            </Link>
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} style={{ display: 'inline-block' }}>
+              <Link className="button" to="/register">
+                Start your first trip
+              </Link>
+            </motion.div>
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} style={{ display: 'inline-block' }}>
+              <Link className="button hero-secondary" to="/login" style={{ marginLeft: "12px", background: "transparent", color: "white", border: "1px solid rgba(255,255,255,0.4)" }}>
+                Open dashboard
+              </Link>
+            </motion.div>
           </div>
         </div>
 
-        <div className="journey-map" aria-label="Animated route preview">
-          <span className="map-label origin-label">Saharanpur</span>
-          <span className="map-label destination-label">Dehradun</span>
-          <span className="moving-route" />
-          <span className="route-particle particle-one" />
-          <span className="route-particle particle-two" />
-          <span className="route-particle particle-three" />
-          <span className="route-node origin-node" />
-          <span className="route-node destination-node" />
-          <div className="live-chip active-chip">
-            <span>Active</span>
-            <strong>Red</strong>
-          </div>
-          <div className="live-chip history-chip">
-            <span>Done</span>
-            <strong>Green</strong>
-          </div>
+        {/* Right Side: Animated Leaflet Map tracking Saharanpur to Puri Temple */}
+        <div className="hero-split-map leaflet-hero-container">
+          <HeroRouteMap scrollProgress={heroProgress} />
         </div>
-      </section>
+      </motion.section>
 
-      <section className="ticker-strip motion-item" aria-label="Platform highlights">
+      <motion.section 
+        className="ticker-strip" 
+        aria-label="Platform highlights"
+        variants={fadeUp}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "0px 0px -10% 0px" }}
+      >
         <div className="ticker-track">
           <span>Map tracking</span>
           <span>Trip budget</span>
@@ -164,9 +171,15 @@ export default function Home() {
           <span>DigiLocker badge</span>
           <span>Photo memory</span>
         </div>
-      </section>
+      </motion.section>
 
-      <section className="mission-section motion-item">
+      <motion.section 
+        className="mission-section"
+        variants={fadeUp}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "0px 0px -10% 0px" }}
+      >
         <div>
           <p className="eyebrow">Why this exists</p>
           <h2>Travel tools are scattered. A journey should feel like one record.</h2>
@@ -175,9 +188,16 @@ export default function Home() {
           Travelers jump between map apps, expense apps, galleries, and social platforms.
           Shivam P combines the emotional map diary with the practical trip ledger.
         </p>
-      </section>
+      </motion.section>
 
-      <section className="live-product motion-item" aria-label="Product preview">
+      <motion.section 
+        className="live-product" 
+        aria-label="Product preview"
+        variants={fadeUp}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "0px 0px -10% 0px" }}
+      >
         <div className="product-copy">
           <p className="eyebrow">Live workflow</p>
           <h2>A dashboard that changes as the journey changes.</h2>
@@ -196,47 +216,79 @@ export default function Home() {
             <strong>Rs. 4,850</strong>
           </div>
 
-          <div className="stage-map">
+          <div className="stage-map" ref={stageRef}>
             <img
               src="https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=1200&q=85"
               alt="Travel map and memories"
             />
-            <span className="stage-route" />
-            <span className="stage-route-runner" />
+            <motion.span className="stage-route" style={{ backgroundColor: routeColor }}>
+              <motion.span className="stage-route-runner" style={{ left: vehicleLeft }}>
+                <span style={{ fontSize: "28px", position: "absolute", top: "-18px", left: "-14px", transform: "scaleX(-1) rotate(19deg)" }}>🏍️</span>
+              </motion.span>
+            </motion.span>
             <span className="stage-pin first-pin">Start</span>
             <span className="stage-pin second-pin">Stop</span>
             <span className="stage-pin third-pin">Memory</span>
           </div>
 
-          <div className="expense-stack">
-            {expenses.map(([category, note, amount]) => (
-              <div key={category}>
+          <motion.div 
+            className="expense-stack"
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
+            {expenses.map(([category, note, amount], i) => (
+              <motion.div key={category} variants={fadeUp} whileHover={{ y: -6 }}>
                 <span>{category}</span>
                 <p>{note}</p>
                 <strong>{amount}</strong>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
-      </section>
+      </motion.section>
 
-      <section className="module-section motion-item">
+      <motion.section 
+        className="module-section"
+        variants={fadeUp}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "0px 0px -10% 0px" }}
+      >
         <div className="section-title">
           <p className="eyebrow">System modules</p>
           <h2>The homepage should show the full idea, not only login and register.</h2>
         </div>
-        <div className="module-grid">
+        <motion.div 
+          className="module-grid"
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+        >
           {modules.map((module) => (
-            <article className="module-tile motion-item" key={module.title}>
+            <motion.article 
+              className="module-tile" 
+              key={module.title}
+              variants={fadeUp}
+              whileHover={{ scale: 1.03, y: -6, boxShadow: "0 22px 48px rgba(23, 23, 23, 0.1)" }}
+            >
               <span>{module.tag}</span>
               <h3>{module.title}</h3>
               <p>{module.text}</p>
-            </article>
+            </motion.article>
           ))}
-        </div>
-      </section>
+        </motion.div>
+      </motion.section>
 
-      <section className="timeline-section motion-item">
+      <motion.section 
+        className="timeline-section"
+        variants={fadeUp}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "0px 0px -10% 0px" }}
+      >
         <div className="timeline-copy">
           <p className="eyebrow">Trip lifecycle</p>
           <h2>From red route to green memory.</h2>
@@ -245,18 +297,35 @@ export default function Home() {
             journey becomes part of the user's history.
           </p>
         </div>
-        <div className="route-timeline">
+        <motion.div 
+          className="route-timeline"
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+        >
           {timeline.map((item) => (
-            <article className="timeline-stop motion-item" key={item.year}>
+            <motion.article 
+              className="timeline-stop" 
+              key={item.year}
+              variants={fadeUp}
+              whileHover={{ x: 10 }}
+            >
               <span>{item.year}</span>
               <h3>{item.title}</h3>
               <p>{item.text}</p>
-            </article>
+            </motion.article>
           ))}
-        </div>
-      </section>
+        </motion.div>
+      </motion.section>
 
-      <section className="memory-band motion-item">
+      <motion.section 
+        className="memory-band"
+        variants={fadeUp}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "0px 0px -10% 0px" }}
+      >
         <img
           src="https://images.unsplash.com/photo-1527631746610-bca00a040d60?auto=format&fit=crop&w=1400&q=85"
           alt="Friends recording a trip memory"
@@ -269,22 +338,32 @@ export default function Home() {
             into a map-based gallery.
           </p>
         </div>
-      </section>
+      </motion.section>
 
-      <section className="launch-section motion-item">
+      <motion.section 
+        className="launch-section"
+        variants={fadeUp}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "0px 0px -10% 0px" }}
+      >
         <div>
           <p className="eyebrow">MVP direction</p>
           <h2>Build the website first. Make the core loop beautiful.</h2>
         </div>
         <div className="launch-actions">
-          <Link className="button" to="/register">
-            Create account
-          </Link>
-          <Link className="button secondary" to="/login">
-            Login
-          </Link>
+          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+            <Link className="button" to="/register">
+              Create account
+            </Link>
+          </motion.div>
+          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+            <Link className="button secondary" to="/login">
+              Login
+            </Link>
+          </motion.div>
         </div>
-      </section>
+      </motion.section>
     </div>
   );
 }
