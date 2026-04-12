@@ -47,6 +47,9 @@ npm run dev
 Frontend runs at `http://localhost:5173`.
 Backend runs at `http://localhost:5000`.
 
+5. Live At:
+https://shivam-2807.github.io/Traveler-Record-App/
+
 ## Project Layout
 
 ```text
