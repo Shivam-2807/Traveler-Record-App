@@ -123,21 +123,21 @@ export default function Home() {
       >
         {/* Left Side: Dark Hero Copy */}
         <div className="hero-split-text">
-          <p className="eyebrow light">SHIVAM P TRAVEL SYSTEM</p>
-          <h1>Every trip becomes a living route, ledger, and memory.</h1>
+          <p className="eyebrow light">TRAVELER RECORD — INDIA'S TRAVEL OS</p>
+          <h1>Your journey deserves more than a screenshot.</h1>
           <p>
-            Active journeys glow red. Completed routes settle into green history.
-            Expenses stay inside the trip where they belong.
+            A living route that glows red when active. A ledger that locks when the trip is done.
+            A map that becomes your personal travel diary — forever.
           </p>
           <div className="actions">
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} style={{ display: 'inline-block' }}>
               <Link className="button" to="/register">
-                Start your first trip
+                Start your first trip →
               </Link>
             </motion.div>
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} style={{ display: 'inline-block' }}>
-              <Link className="button hero-secondary" to="/login" style={{ marginLeft: "12px", background: "transparent", color: "white", border: "1px solid rgba(255,255,255,0.4)" }}>
-                Open dashboard
+              <Link className="button hero-secondary" to="/famous-places" style={{ marginLeft: "12px", background: "transparent", color: "white", border: "1px solid rgba(255,255,255,0.4)" }}>
+                Explore landmarks
               </Link>
             </motion.div>
           </div>
@@ -348,9 +348,14 @@ export default function Home() {
         viewport={{ once: true, margin: "0px 0px -10% 0px" }}
       >
         <div>
-          <p className="eyebrow">MVP direction</p>
-          <h2>Build the website first. Make the core loop beautiful.</h2>
-        </div>
+  <p className="eyebrow">MVP Direction</p>
+  <h2>
+    Start with the essentials. Perfect the core experience.
+  </h2>
+  <p className="subtext">
+    Smart money. Smart memories. Find your travel tribe.
+  </p>
+</div>
         <div className="launch-actions">
           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
             <Link className="button" to="/register">

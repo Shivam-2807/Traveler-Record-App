@@ -20,6 +20,7 @@ export default function Navbar() {
         {isAuthenticated ? (
           <>
             <NavLink to="/dashboard">Dashboard</NavLink>
+            <NavLink to="/famous-places">Famous Places</NavLink>
             <NavLink to="/trips/new">New Trip</NavLink>
             <NavLink to="/history">History</NavLink>
             <NavLink to="/profile">{user?.name || "Profile"}</NavLink>
@@ -29,6 +30,7 @@ export default function Navbar() {
           </>
         ) : (
           <>
+            <NavLink to="/famous-places">Famous Places</NavLink>
             <NavLink to="/login">Login</NavLink>
             <NavLink className="button-link" to="/register">
               Create account

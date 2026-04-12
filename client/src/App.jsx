@@ -1,8 +1,10 @@
 import { Navigate, Route, Routes } from "react-router-dom";
+import Footer from "./components/Footer.jsx";
 import Navbar from "./components/Navbar.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import CreateTrip from "./pages/CreateTrip.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
+import FamousPlaces from "./pages/FamousPlaces.jsx";
 import Home from "./pages/Home.jsx";
 import Login from "./pages/Login.jsx";
 import Profile from "./pages/Profile.jsx";
@@ -17,6 +19,7 @@ export default function App() {
       <main className="page-shell">
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/famous-places" element={<FamousPlaces />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route
@@ -61,7 +64,8 @@ export default function App() {
           />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
-      </main>
+        </main>
+      <Footer />
     </div>
   );
 }
